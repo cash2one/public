@@ -11,7 +11,6 @@ info:
 host: yaoshi.sdo.com
 
 schemes:
-  - https
   - http
 
 # Describe your paths here
@@ -62,18 +61,5 @@ paths:
       # Expected responses for this operation:
       responses:
         # Response code
-        200:
-          description: Successful response
-          # A schema describing your response object.
-          # Use JSON Schema format
-          schema:
-            title: ArrayOfPersons
-            type: array
-            items:
-              title: Person
-              type: object
-              properties:
-                name:
-                  type: string
-                single:
-                  type: boolean
+        '200':
+          description: ok

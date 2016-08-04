@@ -1,65 +1,165 @@
-# Example YAML to get you started quickly.
-# Be aware that YAML has indentation based scoping.
-# Code completion support is available so start typing for available options.
 swagger: '2.0'
-
-# This is your document metadata
 info:
-  version: "0.0.1"
-  title: <极管家接口>
-
+  version: 0.0.1
+  title: '<极管家接口>'
+tags:
+  - name: txz_as_mixed
+    description: txz_as_mixed
 host: yaoshi.sdo.com
-
 schemes:
   - http
-
-# Describe your paths here
+  - https
 paths:
-  # This is a path endpoint. Change it.
-  /apipool:
-    # This is a HTTP operation
+  /apipool?method=txz_as_mixed.dataCollection.saveAppInstallData:
     get:
-      # Describe this verb here. Note: you can use markdown
-      description: |
-        txz_as_mixed.dataCollection.saveAppInstallData
-        `无映射`
-      # This is array of GET operation parameters:
+      tags:
+        - txz_as_mixed
+      description: 保存app安装信息相关的数据 `无映射`
+      produces:
+        - application/json
       parameters:
-        # An example parameter that is in query and is required
-        -
-          name: dataTimeMs
+        - name: dataTimeMs
           in: query
-          description: 数据对应的时间戳
+          description: 数据对应的时间戳［毫秒］
           required: true
           type: number
           format: long
-        -
-          name: phone
+        - name: phone
           in: query
           description: 手机号码
           required: true
           type: string
-        -
-          name: version
+        - name: version
           in: query
           description: 版本
           required: true
           type: string
-        -
-          name: type
+        - name: type
           in: query
           description: 数据类型
           required: true
           type: string
-        -
-          name: content
+        - name: content
           in: query
-          description: 数据类型
+          description: 数据内容，压缩过的字符串
           required: true
           type: string
-
-      # Expected responses for this operation:
       responses:
-        # Response code
         '200':
-          description: ok
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ErrorModule'
+  /apipool?method=txz_as_mixed.profile.getProfile:
+    get:
+      tags:
+        - txz_as_mixed
+      description: 获取用户昵称头像相关的数据 `无映射`
+      produces:
+        - application/json
+      parameters:
+        - name: phone
+          in: query
+          description: 手机号码
+          required: true
+          type: number
+          format: long
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ErrorModule'
+  /apipool?method=txz_as_mixed.dataCollection.saveFeedBack:
+    get:
+      tags:
+        - txz_as_mixed
+      description: 获取用户反馈的数据 `无映射`
+      produces:
+        - application/json
+      parameters:
+        - name: phone
+          in: query
+          description: 手机号码
+          type: number
+          format: long
+        - name: content
+          in: query
+          description: 反馈内容
+          required: true
+          type: string
+        - name: appVersion
+          in: query
+          description: app版本
+          type: string
+        - name: osType
+          in: query
+          description: 系统类型0安卓1ios其他未知
+          type: integer
+          format: int32
+        - name: osVersion
+          in: query
+          description: 系统版本
+          type: string
+        - name: from
+          in: query
+          description: 来源
+          type: string
+        - name: deviceId
+          in: query
+          description: 设备编号
+          type: string
+        - name: deviceModel
+          in: query
+          description: 设备型号
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ErrorModule'
+  /apipool:
+    get:
+      summary: txz_as_mixed.account.saveAccountScoreInfo
+      tags:
+        - txz_as_mixed
+      description: '同步更新数据库 txz_account_status->snda_account 更新 score字段'
+      produces:
+        - application/json
+      parameters:
+        - name: method
+          in: query
+          description: method
+          required: true
+          type: string
+          default: txz_as_mixed.account.saveAccountScoreInfo
+        - name: phone
+          in: query
+          description: 手机号码
+          required: true
+          type: number
+          format: long
+          default: 22322222
+        - name: sndaId
+          in: query
+          description: 数字账号列表，使用逗号分隔
+          required: true
+          type: string
+        - name: score
+          in: query
+          description: 账号评分，使用逗号分隔
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ErrorModule'
+definitions:
+  ErrorModule:
+    properties:
+      ErrHint:
+        type: string
+      return_code:
+        type: integer
+        format: int64
+      return_message:
+        type: string
